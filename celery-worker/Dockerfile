@@ -12,5 +12,5 @@ RUN pip install -r requirements.txt
 COPY tasks.py tasks.py
 
 # Run the Celery worker.
-CMD ["celery", "-A", "tasks", "worker", "--pool=solo" ,"--loglevel=debug"]
+CMD ["celery", "-A", "tasks", "worker" ,"--loglevel=info"]
 

@@ -1,0 +1,5 @@
+celery-worker/__pycache__
+fastapi-app/__pycache__
+celery-flower/__pycache__
+.DS_Store
+
