@@ -1,0 +1,46 @@
+#https://stackoverflow.com/questions/9769496/celery-received-unregistered-task-of-type-run-example
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  fastapi:
+    build:
+      context: ./fastapi-app
+    volumes:
+      - ./fastapi-app:/home/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+
+  celery-worker:
+    build:
+      context: ./celery-worker
+    volumes:
+      - ./celery-worker:/home/app
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+
+  celery-flower:
+    build:
+      context: ./celery-flower
+    volumes:
+      - ./celery-flower:/home/app
+    ports:
+      - '5555:5555'  # Flower web interface
+    depends_on:
+      - redis
+      - celery-worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+  
+
+
